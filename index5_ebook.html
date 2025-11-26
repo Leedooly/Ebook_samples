@@ -446,12 +446,19 @@ function downloadResults() {
   allVoiceCards.forEach(card => {
     const voiceNum = card.querySelector('.voice-number').textContent.trim();
     const isChecked = card.querySelector('input[name="voice"]').checked ? "O" : "X";
-    const reason = card.querySelector('.reason-input').value.trim().replace(/,/g, "");
-    csvContent += `${voiceNum},${isChecked},${reason}\n`;
+    let reason = card.querySelector('.reason-input').value.trim();
+
+    // 큰따옴표 두 개로 바꾸기
+    reason = reason.replace(/"/g, '""');
+    // 줄바꿈 공백으로 변경
+    reason = reason.replace(/[\r\n]+/g, ' ');
+
+    // 모든 필드를 큰따옴표로 감싸기
+    csvContent += `"${voiceNum}","${isChecked}","${reason}"\n`;
   });
 
-
-  const encodedUri = encodeURI("data:text/csv;charset=utf-8," + csvContent);
+  // encodeURIComponent 사용
+  const encodedUri = "data:text/csv;charset=utf-8," + encodeURIComponent(csvContent);
   const link = document.createElement("a");
   link.setAttribute("href", encodedUri);
   link.setAttribute("download", `Ebook_${name}_results.csv`);
@@ -459,6 +466,7 @@ function downloadResults() {
   link.click();
   document.body.removeChild(link);
 }
+
 
 document.querySelectorAll('.reason-input').forEach(textarea => {
   textarea.addEventListener('input', function(e) {
@@ -472,6 +480,7 @@ document.querySelectorAll('.reason-input').forEach(textarea => {
 
 </body>
 </html>
+
 
 
 
