@@ -441,13 +441,25 @@ function downloadResults() {
   const encodedUri = encodeURI("data:text/csv;charset=utf-8," + csvContent);
   const link = document.createElement("a");
   link.setAttribute("href", encodedUri);
-  link.setAttribute("download", `[E-Book]_${name}_results.csv`);
+  link.setAttribute("download", `E-Book_${name}_results.csv`);
   document.body.appendChild(link);
   link.click();
   document.body.removeChild(link);
 }
+
+  // textarea 엔터 입력 막기
+document.querySelectorAll('.reason-input').forEach(textarea => {
+  textarea.addEventListener('keydown', function(e) {
+    if (e.key === 'Enter') {
+      e.preventDefault();  // 엔터 입력 차단
+    }
+  });
+});
+
+  
 </script>
 
 </body>
 </html>
+
 
